@@ -19,6 +19,7 @@ exports.getAll = function(callback) {
     });
 };
 
+
 exports.getById = function(company_id, callback) {
     var query = 'SELECT c.*, a.street, a.zip_code FROM company c ' +
         'LEFT JOIN company_address ca on ca.company_id = c.company_id ' +

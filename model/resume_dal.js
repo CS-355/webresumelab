@@ -1,21 +1,13 @@
-var mysql   = require('mysql');
-var db  = require('./db_connection.js');
+var mysql = require('mysql');
+var db = require('./db_connection.js');
 
-/* DATABASE CONFIGURATION */
+/* DATABASE CONFIGURATION*/
 var connection = mysql.createConnection(db.config);
-
-exports.getAll = function(callback) {
-    var query = 'SELECT * FROM address;';
-
-    connection.query(query, function(err, result) {
-        callback(err, result);
-    });
-};
-exports.getAllAddressNames = () =>
+exports.getAllResumeNames = () =>
 {
     return new Promise((resolve, reject) =>
       {
-        let myquery = 'select * from address;';
+        let myquery = 'select * from resume;';
         connection.query(myquery, (err, result) =>
           {
             console.log(result)
@@ -26,14 +18,14 @@ exports.getAllAddressNames = () =>
     );
 }
 
-exports.getAddress1 = (address_id) =>
+exports.getResume1 = (resume_id) =>
 {
   console.log("got here")
-  console.log(address_id)
+  console.log(resume_id)
 
   return new Promise((resolve, reject) =>
     {
-      let myquery = `select * from address where address_id = ${address_id};`;
+      let myquery = `select * from resume where resume_id = ${resume_id};`;
       console.log(myquery)
       connection.query(myquery, (err, result) =>
         {
@@ -41,11 +33,11 @@ exports.getAddress1 = (address_id) =>
         });
     })};
 
-exports.getAddress = () =>
+exports.getResume = () =>
 {
   return new Promise((resolve, reject) =>
     {
-      let myquery = `select * from address;`;
+      let myquery = `select * from resume;`;
       connection.query(myquery, (err, result) =>
         {
           err ? reject(err) : resolve(result);
@@ -53,31 +45,32 @@ exports.getAddress = () =>
     });
   };
 
-exports.editAddress = (req) =>
+exports.editResume = (req) =>
 {
   return new Promise((resolve, reject) =>
   {
-    console.log("getting address")
+    console.log("getting resume")
     console.log(req)
-    console.log("\n")
-    let myquery = `select * from address where address_id = ${req};`;
+    console.log("/n")
+    let myquery = `select * from resume where resume_id = ${req};`;
     connection.query(myquery, (err, result) =>
-    {
-      err ? reject(err) : resolve(result);
-    });
-  })
+      {
+        err ? reject(err) : resolve(result);
+      });
+  }
+)
 }
 
 // double check the object deconstruction
-exports.editOldAddress = ({street, zip_code, address_id}) =>
+exports.editOldResume = ({resume_name, resume_id}) =>
 {
   return new Promise((resolve, reject) =>
     {
       console.log("data to update")
-      console.log(street, zip_code, address_id)
-      let myquery = `update address set street = '${street}', zip_code = ${zip_code} where address_id = ${address_id};`;
+      console.log(resume_name, resume_id)
+      let myquery = `update resume set resume_name = '${resume_name}' where resume_id = ${resume_id};`;
       console.log(myquery)
-      connection.query(myquery, (err) =>
+      connecton.query(myquery, (err) =>
         {
           err ? reject(err) : resolve();
         }
@@ -86,12 +79,12 @@ exports.editOldAddress = ({street, zip_code, address_id}) =>
 )
 }
 
-exports.deleteAddress = (address_id) =>
+exports.deleteResume = (resume_id) =>
 {
-  console.log(address_id)
+  console.log(resume_id)
   return new Promise((resolve, reject) =>
     {
-      let myquery = `delete from address where address_id = ${address_id};`;
+      let myquery = `delete from resume where resume_id = ${resume_id};`;
       connection.query(myquery, (err) =>
         {
           err ? reject(err) : resolve();
@@ -102,9 +95,9 @@ exports.deleteAddress = (address_id) =>
 )
 }
 
-exports.addAddress = (req, res) =>
+exports.addResume = (req, res) =>
 {
-  insertAddress(req.query, 'address')
+  insertResume(req.query, 'resume')
   .then(res.redirect('sucess'))
   .catch(err =>
     {
@@ -114,7 +107,7 @@ exports.addAddress = (req, res) =>
   );
 }
 
-exports.insertAddress = (data, item) =>
+exports.insertResume = (data, item) =>
 {
   console.log("item = ", item)
   return new Promise((resolve, reject) =>

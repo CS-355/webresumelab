@@ -1,0 +1,17 @@
+<%- include("../includes/header.ejs", {title: "Edit " + address.street});%>
+<h1>Edit <%=address.street%></h1>
+<form action="/address/editOldAddress" method = "get">
+    <input type="hidden" id="address_id" name="address_id" value="<%=address.address_id%>">
+    Street: <input id="street" name="street" type="text" value="<%=address.street%>"/>
+    <br />
+    <br />
+
+    Zip Code: <input id="zip_code" name="zip_code" type="text" value="<%=address.zip_code%>"/>
+    <br />
+    <br />
+    <input type="submit" />
+
+</form>
+
+<%- include("../includes/footer.ejs");%>
+</html>

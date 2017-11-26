@@ -2,10 +2,12 @@ var express = require('express');
 var router = express.Router();
 var company_dal = require('../model/company_dal');
 var address_dal = require('../model/address_dal');
-
+//var account_dal = require('../model/account_dal');
 
 // View All companys
+// account_dal.getAccount = function
 router.get('/all', function(req, res) {
+  // if the data is grabbed suscessfully, then render the page
     company_dal.getAll(function(err, result){
         if(err) {
             res.send(err);
@@ -16,6 +18,8 @@ router.get('/all', function(req, res) {
     });
 
 });
+
+
 
 // View the company for the given id
 router.get('/', function(req, res){
@@ -50,6 +54,8 @@ router.get('/add', function(req, res){
 // View the company for the given id
 router.get('/insert', function(req, res){
     // simple validation
+    console.log(req.query)
+    console.log(req.body)
     if(req.query.company_name == null) {
         res.send('Company Name must be provided.');
     }
@@ -71,6 +77,8 @@ router.get('/insert', function(req, res){
     }
 });
 
+
+
 router.get('/edit', function(req, res){
     if(req.query.company_id == null) {
         res.send('A company id is required');
@@ -90,6 +98,7 @@ router.get('/edit2', function(req, res){
    else {
        company_dal.getById(req.query.company_id, function(err, company){
            address_dal.getAll(function(err, address) {
+               // first element because company_id is the first column
                res.render('company/companyUpdate', {company: company[0], address: address});
            });
        });
@@ -120,5 +129,8 @@ router.get('/delete', function(req, res){
          });
     }
 });
+
+
+
 
 module.exports = router;

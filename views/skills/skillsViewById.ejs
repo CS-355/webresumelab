@@ -1,0 +1,9 @@
+<%- include("../includes/header.ejs", {title: "Skill - " + skill.skill_name});%>
+    <h1>Skill</h1>
+    <ul>
+        <!-- skill name -->
+        <li>Name: <%=skill.skill_name%></li>
+        <li>Description: <%=skill.description%></li>
+    </ul>
+<a href="/skills/allSkills"><< back</a>
+<%- include("../includes/footer.ejs");%>

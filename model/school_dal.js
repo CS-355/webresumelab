@@ -5,17 +5,17 @@ var db  = require('./db_connection.js');
 var connection = mysql.createConnection(db.config);
 
 exports.getAll = function(callback) {
-    var query = 'SELECT * FROM address;';
+    var query = 'SELECT * FROM school;';
 
     connection.query(query, function(err, result) {
         callback(err, result);
     });
 };
-exports.getAllAddressNames = () =>
+exports.getAllSchoolNames = () =>
 {
     return new Promise((resolve, reject) =>
       {
-        let myquery = 'select * from address;';
+        let myquery = 'select * from school;';
         connection.query(myquery, (err, result) =>
           {
             console.log(result)
@@ -26,14 +26,15 @@ exports.getAllAddressNames = () =>
     );
 }
 
-exports.getAddress1 = (address_id) =>
+exports.getSchool1 = (school_id) =>
 {
   console.log("got here")
-  console.log(address_id)
+  console.log(school_id)
+  console.log("fails after here")
 
   return new Promise((resolve, reject) =>
     {
-      let myquery = `select * from address where address_id = ${address_id};`;
+      let myquery = `select * from school where school_id = ${school_id};`;
       console.log(myquery)
       connection.query(myquery, (err, result) =>
         {
@@ -41,41 +42,43 @@ exports.getAddress1 = (address_id) =>
         });
     })};
 
-exports.getAddress = () =>
+exports.getSchool = () =>
 {
   return new Promise((resolve, reject) =>
     {
-      let myquery = `select * from address;`;
+      let myquery = `select * from school;`;
       connection.query(myquery, (err, result) =>
         {
           err ? reject(err) : resolve(result);
         });
     });
   };
-
-exports.editAddress = (req) =>
+////////
+exports.editSchool = (req) =>
 {
   return new Promise((resolve, reject) =>
   {
-    console.log("getting address")
+    console.log("getting school")
     console.log(req)
     console.log("\n")
-    let myquery = `select * from address where address_id = ${req};`;
+    let myquery = `select * from school where school_id = ${req};`;
     connection.query(myquery, (err, result) =>
     {
       err ? reject(err) : resolve(result);
     });
-  })
+  }
+)
 }
 
+
 // double check the object deconstruction
-exports.editOldAddress = ({street, zip_code, address_id}) =>
+exports.editOldSchool = ({school_name, school_id}) =>
 {
   return new Promise((resolve, reject) =>
     {
       console.log("data to update")
-      console.log(street, zip_code, address_id)
-      let myquery = `update address set street = '${street}', zip_code = ${zip_code} where address_id = ${address_id};`;
+      console.log(school_name, school_id)
+      let myquery = `update school set school_name = '${school_name}' where school_id = ${school_id};`;
       console.log(myquery)
       connection.query(myquery, (err) =>
         {
@@ -86,12 +89,12 @@ exports.editOldAddress = ({street, zip_code, address_id}) =>
 )
 }
 
-exports.deleteAddress = (address_id) =>
+exports.deleteSchool = (school_id) =>
 {
-  console.log(address_id)
+  console.log(school_id)
   return new Promise((resolve, reject) =>
     {
-      let myquery = `delete from address where address_id = ${address_id};`;
+      let myquery = `delete from school where school_id = ${school_id};`;
       connection.query(myquery, (err) =>
         {
           err ? reject(err) : resolve();
@@ -102,9 +105,9 @@ exports.deleteAddress = (address_id) =>
 )
 }
 
-exports.addAddress = (req, res) =>
+exports.addSchool = (req, res) =>
 {
-  insertAddress(req.query, 'address')
+  insertSchool(req.query, 'school')
   .then(res.redirect('sucess'))
   .catch(err =>
     {
@@ -114,7 +117,7 @@ exports.addAddress = (req, res) =>
   );
 }
 
-exports.insertAddress = (data, item) =>
+exports.insertSchool = (data, item) =>
 {
   console.log("item = ", item)
   return new Promise((resolve, reject) =>

@@ -1,0 +1,15 @@
+<%- include("../includes/header.ejs", {title: "Edit " + school.school_name});%>
+
+<h1>Edit <%= school.school_name%></h1>
+<form action="/school/editOldSchool" method = "get">
+    <input type="hidden" id="school_id" name="school_id" value="<%=school.school_id%>">
+    School Name: <input id="school_name" name="school_name" type="text" value="<%= school.school_name%>"/>
+    <br />
+    <br />
+
+    <input type="submit" />
+
+</form>
+<%- include("../includes/footer.ejs");%>
+
+</html>
