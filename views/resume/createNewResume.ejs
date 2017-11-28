@@ -1,0 +1,67 @@
+<%- include("../includes/header.ejs", {title: "Create New Resume"});%>
+
+<h1>New Resume</h1>
+
+<form action="/resume/add/saveNewResume" method="get">
+    <input type="hidden" name="account_id" id="account_id" value="<%=d.account_id%>" />
+    Resume Name<input type="text" name="resume_name" id="resume_name"/>
+
+    <br />
+    <br />
+    <!-- only have the schools the user attends-->
+    <select id="school_id" name="school_id" multiple="multiple">
+      <%for (var i = 0; i < a.length; i++) {
+
+
+      %>
+        <option value="<%=a[i].school_id%>"><%=a[i].school_name%></option>
+
+        <% } %>
+        </select>
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            $('#school_id').multiselect();
+        });
+    </script>
+
+    <br />
+    <br />
+    <!-- have each company the user has worked for stored in account_company table-->
+
+    <select id="company_id" name="company_id" multiple="multiple">
+        <%for(var i = 0; i < b.length; i++)  {%>
+        <option value="<%=b[i].company_id%>"><%=b[i].company_name%></option>
+        <% } %>
+    </select>
+
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            $('#company_id').multiselect();
+        });
+    </script>
+
+    <br />
+    <br />
+    <!-- have each skill the user has in account skills table-->
+    <select id="skill_id" name="skill_id" multiple="multiple">
+        <% for(var i = 0; i < c.length; i++) {%>
+            <option value="<%=c[i].skill_id%>"><%=c[i].skill_name%></option>
+        <% } %>
+    </select>
+
+    <script type="text/javascript">
+        $(document).ready(function()
+        {
+            $('#skill_id').multiselect();
+        });
+    </script>
+
+    <br />
+    <br />
+    <!-- have a submit button-->
+    <input type="submit" />
+</form>
+<%- include("../includes/footer.ejs");%>
+</html>

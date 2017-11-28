@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var resume_dal = require('../model/resume_dal');
+var account_dal = require('../model/account_dal');
 
 // View All resumes
 router.get('/allResumes', (req, res) =>
@@ -15,11 +16,56 @@ router.get('/allResumes', (req, res) =>
         .catch(err => res.send(err));
     });
 
-router.get('/insertResume', (req, res) =>
+router.get('/add/selectuser', (req, res) =>
   {
-      //console.log(resume)
-      res.render('resume/insertResume');
+    console.log("got here")
+      account_dal.getAllAccountNames2()
+      .then(account =>
+        {
+          res.render('resume/addToResume', {account});
+
+        })
+      .catch(err => res.send(err));
   });
+
+router.get('/add/addNewResume', (req, res) =>
+  {
+    //console.log(re)
+    resume_dal.getDataForAddNewResumeForm(req.query.account_id)
+    .then(calls =>
+      {
+        let a = calls[0]
+        let b = calls[1]
+        let c = calls[2]
+
+        let d = req.query
+        console.log(a, b, c, d)
+        res.render('resume/createNewResume', {a, b, c, d});
+      })
+    .catch(err => res.send(err));
+    //console.log(resume)
+
+  }
+)
+
+router.get('/add/saveNewResume', (req, res) =>
+{
+  console.log("got here")
+  console.log(req.query)
+  console.log("\n")
+  resume_dal.insertNewResumeData(req.query)
+
+  //res.send('success')
+  resume_dal.getAllResumeNames()
+  .then(resume =>
+    {
+      //console.log(resume)
+      res.render('resume/resumeViewAll', {resume});
+    }
+  );
+
+}
+)
 
 router.get('/insertNewResume', (req, res) =>
   {

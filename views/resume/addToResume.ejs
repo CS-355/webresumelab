@@ -1,0 +1,13 @@
+<%- include("../includes/header.ejs", {title: "Create New Resume"});%>
+<h1>Create New Resume</h1>
+<form action="/resume/add/addNewResume" method="get">
+  <select id="account_id" name="account_id">
+      <%for (var i = 0; i < account.length; i++) {%>
+      <option value="<%=account[i].account_id%>"> <%=account[i].first_name%>  <%=account[i].last_name%> </option>
+      <% } %>
+  </select>
+    <br />
+    <input type="submit" />
+</form>
+<%-include("../includes/footer.ejs");%>
+<html/>
