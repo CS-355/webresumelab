@@ -55,11 +55,12 @@ router.get('/allSchools', (req, res) => {
 // Return the add a new school form
 router.get('/insertSchool', (req, res) =>
   {
-    school_dal.getSchool()
-    .then(school =>
+
+    school_dal.getAllAddresses()
+    .then(address =>
       {
-        console.log(school)
-        res.render('school/insertSchool', {school});
+        console.log(address)
+        res.render('school/insertSchool', {address});
       })
     .catch(err => res.send(err));
 
@@ -70,10 +71,20 @@ router.get('/insertNewSchool', (req, res) =>
   {
     console.log("got here")
     console.log(req.query)
-    school_dal.insertSchool(req.query, 'school')
+    // should have a school name and list? of address_id's
+    // put into school and get id from entry
+    // put into helper school tables
+    school_dal.insertNewSchoolData(req.query)
+    //school_dal.insertSchool(req.query, 'school')
     school_dal.getSchool()
     .then(school =>
       {
+
+
+
+
+
+
         //res.redirect(302, 'insertSchool');
         res.render('school/schoolViewAll', {school});
       })
@@ -92,19 +103,37 @@ router.get('/editSchool', (req, res) =>
   {
     console.log("edit school")
     console.log(req.query)
-    school_dal.editSchool(req.query.school_id)
-    .then(school1 =>
+    school_dal.getAddressId(req.query.school_id)
+    .then(result =>
       {
-          console.log("add to schole")
-          console.log(school1)
-          //console.log(school1[0].school_id)
-          //console.log("\n")
-          console.log(school1[0])
-          console.log("\n")
-        let school = school1[0]
-        res.render('school/editSchool', {school});
-      })
+        let address_id = result[0][0].address_id
+        school_dal.getAllSchoolData(req.query.school_id, address_id)
+        .then(result =>
+          {
+              console.log("add to schole")
+              console.log(result)
+              let school = result[0]
+              let table_of_addresses = result[1]
+              let chosen_address = result[2]
+              //console.log(school1[0].school_id)
+              //console.log("\n")
+              console.log("data for edit school")
+              console.log(school)
+              console.log(table_of_addresses)
+              console.log("chosen address[0]",chosen_address[0])
+              console.log("\n")
+              let x = [table_of_addresses, chosen_address]
+            //let school = result[0]
+            res.render('school/editSchool', {school, x});
+          })
+        .catch(err => res.send(err));
+
+      }
+    )
     .catch(err => res.send(err));
+    //school_dal.editSchool(req.query.school_id)
+
+
   });
 router.get('/editOldSchool', (req, res) =>
   {

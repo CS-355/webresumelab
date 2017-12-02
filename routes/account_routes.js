@@ -55,11 +55,15 @@ router.get('/allAccounts', (req, res) => {
 // Return the add a new account form
 router.get('/insertAccount', (req, res) =>
   {
-    account_dal.getAccount()
-    .then(account =>
+    // this should be a procedure call
+    account_dal.getTablesForNewAccount()
+    .then(calls =>
       {
-        console.log(account)
-        res.render('account/insertAccount', {account});
+        let school = calls[0]
+        let skill = calls[1]
+        let company = calls[2]
+        //console.log(calls)
+        res.render('account/insertAccount', {school, skill, company});
       })
     .catch(err => res.send(err));
 
@@ -70,7 +74,17 @@ router.get('/insertNewAccount', (req, res) =>
   {
     console.log("got here")
     console.log(req.query)
-    account_dal.insertAccount(req.query, 'account')
+    //account_dal.insertAccount(req.query, 'account')
+    let school_id1 = req.query.school_id
+    let email = req.query.email
+    let first_name = req.query.first_name
+    let last_name = req.query.last_name
+    let skill_id1 = req.query.skill_id
+    let company_id1 = req.query.company_id
+    var x = {email, first_name, last_name, school_id1, skill_id1, company_id1}
+
+    account_dal.insertNewAccountData(x)
+    console.log("insert successful")
     account_dal.getAccount()
     .then(account =>
       {
@@ -92,16 +106,26 @@ router.get('/editAccount', (req, res) =>
   {
     //console.log("edit account")
     //console.log(req.query)
+    // show the current data the user chose but allow them
+    // get all data for the account_id
     account_dal.editAccount(req.query.account_id)
     .then(account1 =>
       {
+        let account = account1[0][0]
+        console.log("account data")
+        console.log(account.account_id)
+        let school = account1[1]
+        let company = account1[2]
+        let skill = account1[3]
+
+        console.log("edit account")
           console.log(account1)
           //console.log(account1[0].account_id)
           //console.log("\n")
-          console.log(account1[0])
+          //console.log(account1[0])
           console.log("\n")
-        let account = account1[0]
-        res.render('account/editAccount', {account});
+        //let account = account1[0]
+        res.render('account/editAccount', {account, school, company, skill});
       })
     .catch(err => res.send(err));
   });
@@ -133,11 +157,14 @@ router.get('/editOldAccount', (req, res) =>
 router.get('/deleteAccount', (req, res) =>
   {
     console.log(req.query)
-    account_dal.deleteAccount(req.query.account_id)
-    //console.log("got here")
+    account_dal.deleteAllTracesOfAccount(req.query.account_id)
+
+    console.log("got here")
     account_dal.getAllAccountNames2()
     .then(account =>
       {
+        console.log("render")
+        console.log(account)
         res.render('account/accountViewAll', {account});
       })
     .catch(err => res.send(err));
@@ -154,10 +181,92 @@ router.get('/', (req, res) =>
   account_dal.getAccount1(req.query.account_id)
   .then(account1 =>
     {
-      console.log(account1[0])
+      console.log("account1 data", account1, account1[0].account_id)
+      // all 3 lists of ids
+      //var skills = []
+      // each result should have a list of numbers
+      // get skill_id
+
+      account_dal.getSkill_id(account1[0].account_id)
+      .then(skill_ids =>
+        {
+          console.log("skill_ids", skill_ids)
+          account_dal.getAllSkills(skill_ids)
+          .then(skill =>
+            {
+              console.log("skill", skill)
+              let skills = skill
+              account_dal.getAllSchools(account1[0].account_id)
+              .then(result =>
+                {
+                  console.log("school", result)
+                  let schools = result
+                  //schools = result
+                  account_dal.getCompanyIds(account1[0].account_id)
+                  .then(result =>
+                    {
+                      account_dal.getAllCompanies(result)
+                      .then(result =>
+                        {
+                          console.log("companies", result)
+                          let companies = result
+                          let account = account1
+                          console.log("all", account)
+                          console.log("\n")
+                          console.log(schools)
+                          console.log("\n")
+                          console.log(skills)
+                          console.log("\ncompanies")
+                          console.log(companies)
+                          res.render('account/accountViewById', {account, schools, skills ,companies});
+
+                        }
+                      )
+
+                      //companies = result
+                    }
+                  );
+
+                }
+              );
+
+              //skills.push(skill)
+            })
+          //console.log("skills", skills)
+
+            //console.log("got here")
+
+        });
+
+      //console.log(account1)
+      /*var schools = []
+      account_dal.getAllSchools(account1[0].account_id)
+      .then(result =>
+        {
+          console.log("school", result)
+          schools = result
+        }
+      );
+      //console.log(account1)
+      var companies = []
+      account_dal.getAllCompanies(account1[0].account_id)
+      .then(result =>
+        {
+          console.log("companies", result)
+          companies = result
+        }
+      );*/
+      /*console.log("done")
       let account = account1[0]
-      res.render('account/accountViewById', {account});
-    })
+      console.log("result set")
+      console.log(account, /*skills, schools, companies)
+
+      /*setTimeout(
+        () => {
+          res.render('account/accountViewById', {account, schools, /*skills ,companies});
+        }, 10);
+*/
+      })
   .catch(err => res.send(err));
 });
 

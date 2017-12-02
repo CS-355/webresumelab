@@ -39,6 +39,7 @@ router.get('/insertNewAddress', (req, res) =>
     .catch(err => res.send(err));
   });
 
+// viewAll -> edit form
 router.get('/editAddress', (req, res) =>
   {
       address_dal.editAddress(req.query.address_id)
@@ -53,6 +54,7 @@ router.get('/editAddress', (req, res) =>
       .catch(err => res.send(err));
   });
 
+// edit form -> viewAll with changes
 router.get('/editOldAddress', (req, res) =>
     {
       console.log("updating old address")

@@ -2,11 +2,32 @@
 
 <h1>Edit <%= school.school_name%></h1>
 <form action="/school/editOldSchool" method = "get">
-    <input type="hidden" id="school_id" name="school_id" value="<%=school.school_id%>">
-    School Name: <input id="school_name" name="school_name" type="text" value="<%= school.school_name%>"/>
+    <input type="hidden" id="school_id" name="school_id" value="<%=school[0].school_id%>">
+    School Name: <input id="school_name" name="school_name" type="text" value="<%= school[0].school_name%>"/>
+    <br />
+    <br />
+    <table border="1">
+      <tr><th>address</th></tr>
+      <% for(var i=0; x[1].length > i; i++ ) {  %>
+      <tr>
+          <td><%=x[1][i].street%> <%=x[1][i].zip_code%></td>
+      </tr>
+      <% } %>
+    </table>
+
     <br />
     <br />
 
+    Addresses :
+    <select id="address_id" name="address_id" multiple="multiple">
+        <% for(var i = 0; x[0].length > i; i++ ) {%>
+        <option value="<%= x[0][i].address_id%>" ><%=x[0][i].street%> <%=x[0][i].zip_code%></option>
+        <% } %>
+    </select>
+
+
+    <br />
+    <br />
     <input type="submit" />
 
 </form>

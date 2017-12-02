@@ -3,56 +3,84 @@
 <h1>Add New Account</h1>
 
 <form action="/account/insertNewAccount" method="get">
-    <!-- <input id="account_id" name="account_id" value="<%account.account_id%>"> -->
     Email: <input id="email" name="email" type="text" />
     <br />
     <br />
-    <!-- <input id="account_id" name="account_id" value="<%account.account_id%>"> -->
     First Name : <input id="first_name" name="first_name" type="text" />
     <br />
-    <!--
-    <input id="account_id" name="account_id" value="<%=account.account_id%>">
-    First Name: <input id="first_name" name="first_name" type="text" value="<%= account.first_name%>"/>
-  -->
-    <!-- set it up so user has to type in all 3 attributes -->
-    <!--<select id="first_name" name="first_name" multiple="multiple">
-        <% for(var i = 0; account.length > i; i++ ) {%>
-        <option value="<%= account[i].first_name%>" ><%= account[i].first_name%></option>
+
+
+    <br />
+    Last Name :<input id="last_name" name="last_name" type="text" />
+
+
+    <br />
+    <br />
+    <!-- skills-->
+    Skills :
+    <select id="skill_id" name="skill_id" multiple="multiple">
+        <% for(var i = 0; skill.length > i; i++ ) {%>
+        <option value="<%= skill[i].skill_id%>" ><%=skill[i].skill_name%></option>
         <% } %>
     </select>
-  -->
+
     <!-- Initialize the multiselect plugin: -->
-    <!--
     <script type="text/javascript">
         $(document).ready(function()
             {
-                $('#first_name').multiselect();
+                $('#skill_id').multiselect();
             }
         );
+
     </script>
-  -->
 
     <br />
-    <!-- <input id="account_id" name="account_id" value="<%account.account_id%>"> -->
-    Last Name :<input id="last_name" name="last_name" type="text" />
     <br />
-    <!--
-    <select id="last_name" name="last_name" multiple="multiple">
-        <% for(var i = 0; account.length > i; i++ ) {%>
-        <option value="<%= account[i].last_name%>" ><%=account[i].last_name%></option>
+    <!-- school-->
+    Schools :
+    <select id="school_id" name="school_id" multiple="multiple">
+        <% for(var i = 0; school.length > i; i++ ) {%>
+        <option value="<%= school[i].school_id%>" ><%=school[i].school_name%></option>
         <% } %>
     </select>
-  -->
 
     <!-- Initialize the multiselect plugin: -->
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function()
             {
-                $('#last_name').multiselect();
+                $('#school_id').multiselect();
             }
         );
 
-    </script> changed this-->
+    </script>
+
+    <br />
+    <br />
+
+
+
+
+
+    <!-- company-->
+    Company :
+    <select id="company_id" name="company_id" multiple="multiple">
+        <% for(var i = 0; company.length > i; i++ ) {%>
+        <option value="<%= company[i].company_id%>" ><%=company[i].company_name%></option>
+        <% } %>
+    </select>
+
+    <!-- Initialize the multiselect plugin: -->
+    <script type="text/javascript">
+        $(document).ready(function()
+            {
+                $('#company_id').multiselect();
+            }
+        );
+
+    </script>
+
+
+
     <br />
     <input type="submit" />
 </form>

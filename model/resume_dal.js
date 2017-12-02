@@ -59,6 +59,7 @@ exports.editResume = (req) =>
     console.log("getting resume")
     console.log(req)
     console.log("/n")
+    // call precedure with account_id
     let myquery = `select * from resume where resume_id = ${req};`;
     connection.query(myquery, (err, result) =>
       {

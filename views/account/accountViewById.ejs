@@ -2,12 +2,47 @@
     <h1>Account</h1>
     <ul>
         <!-- account email -->
-        <li>Email: <%=account.email%></li>
-        <li>First Name: <%=account.first_name%></li>
-        <li>Last Name: <%=account.last_name%></li>
+        <li>First Name: <%=account[0].first_name%></li>
+        <li>Last Name: <%=account[0].last_name%></li>
+        <li>Email: <%=account[0].email%></li>
+
 
     </ul>
-
+    <br />
+    <br />
+    Skills:
+    <ul>
+    <% skills.forEach(item => {%>
+      <li>Name: <%=item[0].skill_name%></li>
+      <li>Description: <%=item[0].description%></li>
+      <br />
+      <%})%>
+    </ul>
+    <br />
+    <br />
+    Schools:
+    <ul>
+      <% schools.forEach(item => {%>
+        <li>Start Date: <%=item.start_date%></li>
+        <li>End Date: <%=item.end_date%></li>
+        <li>GPA: <%=item.gpa%></li>
+        <br />
+      <%})%>
+    </ul>
+    <br />
+    <br />
+    Companies:
+    <ul>
+      <%companies.forEach(item => {%>
+        <li>Name: <%=item[0].company_name%></li>
+        <br />
+      <%})%>
+    </ul>
+    <br />
+    <br />
+    <!--
+      all companies
+    -->
 <a href="/account/allAccounts"><< back</a>
 
 <%- include("../includes/footer.ejs"); %>

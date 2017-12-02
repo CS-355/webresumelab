@@ -15,6 +15,108 @@
     <!-- <input type="hidden" id="account_id" name="account_id" value="<%=account.account_id%>"> -->
     Email: <input id="email" name="email" type="text" value="<%=account.email%>"/>
 
+    <br />
+    <br />
+    Skills: <br />
+
+    <table border="1">
+      <tr><th>skill</th></tr>
+      <% for(var i=0; skill.length > i; i++ ) {
+          var selected = ""
+          if(skill[i].account_id == account.account_id)
+          {
+      %>
+      <tr>
+          <td><%= skill[i].skill_name + ', ' + skill[i].description %></td>
+      </tr>
+      <% }} %>
+    </table>
+
+
+    <select id="skill_id" name="skill_id" multiple="multiple">
+        <% for(var i=0; skill.length > i; i++ ) {
+
+        %>
+        <option value="<%= skill[i].skill_id %>" ><%= skill[i].skill_name + ', ' + skill[i].description %></option>
+        <% } %>
+    </select>
+
+    <!-- Initialize the multiselect plugin: -->
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('#skill_id').multiselect();
+        });
+    </script>
+
+
+
+    <br />
+    <br />
+    Schools: <br />
+    <table border="1">
+      <tr><th>school</th></tr>
+      <% for(var i=0; school.length > i; i++ ) {
+          var selected = ""
+          if(school[i].account_id == account.account_id)
+          {
+      %>
+      <tr>
+          <td><%= school[i].school_name %></td>
+      </tr>
+      <% }} %>
+    </table>
+    <select id="school_id" name="school_id" multiple="multiple">
+        <% for(var i=0; school.length > i; i++ ) {
+
+        %>
+        <option value="<%= school[i].school_id %>" ><%= school[i].school_name %></option>
+        <% } %>
+    </select>
+
+    <!-- Initialize the multiselect plugin: -->
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('#school_id').multiselect();
+        });
+    </script>
+
+
+
+    <br />
+    <br />
+    Companies: <br />
+    <table border="1">
+      <tr><th>companies</th></tr>
+      <% for(var i=0; company.length > i; i++ ) {
+          var selected = ""
+          if(company[i].account_id == account.account_id)
+          {
+      %>
+      <tr>
+          <td><%= company[i].company_name %></td>
+      </tr>
+      <% }} %>
+    </table>
+    <select id="company_id" name="company_id" multiple="multiple">
+        <% for(var i=0; company.length > i; i++ ) {
+
+
+        %>
+        <option value="<%= company[i].company_id %>" ><%= company[i].company_name %></option>
+        <% } %>
+    </select>
+
+    <!-- Initialize the multiselect plugin: -->
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('#company_id').multiselect();
+        });
+    </script>
+
+
     <input type="submit" />
 
 </form>

@@ -19,7 +19,7 @@ exports.getAll = function(callback) {
     });
 };
 
-
+// checking if address[i].company_id is != null
 exports.getById = function(company_id, callback) {
     var query = 'SELECT c.*, a.street, a.zip_code FROM company c ' +
         'LEFT JOIN company_address ca on ca.company_id = c.company_id ' +
@@ -62,7 +62,7 @@ exports.insert = function(params, callback) {
 
         // NOTE THE EXTRA [] AROUND companyAddressData
         connection.query(query, [companyAddressData], function(err, result){
-            callback(err, result);
+            callback(err, company_id);
         });
     });
 
@@ -83,15 +83,16 @@ var companyAddressInsert = function(company_id, addressIdArray, callback){
     // NOTE THAT THERE IS ONLY ONE QUESTION MARK IN VALUES ?
     var query = 'INSERT INTO company_address (company_id, address_id) VALUES ?';
 
+    console.log("companyAddressInsert", company_id, addressIdArray, callback)
     // TO BULK INSERT RECORDS WE CREATE A MULTIDIMENSIONAL ARRAY OF THE VALUES
     var companyAddressData = [];
     if (addressIdArray.constructor === Array) {
-        for (var i = 0; i < params.address_id.length; i++) {
-            companyAddressData.push([company_id, params.address_id[i]]);
+        for (var i = 0; i < addressIdArray.length; i++) {
+            companyAddressData.push([company_id, addressIdArray[i]]);
         }
     }
     else {
-        companyAddressData.push([company_id, params.address_id]);
+        companyAddressData.push([company_id, addressIdArray]);
     }
     connection.query(query, [companyAddressData], function(err, result){
         callback(err, result);
@@ -122,6 +123,7 @@ exports.update = function(params, callback) {
 
             if(params.address_id != null) {
                 //insert company_address ids
+                console.log("update\n", params)
                 companyAddressInsert(params.company_id, params.address_id, function(err, result){
                     callback(err, result);
                 });}
@@ -156,7 +158,7 @@ exports.update = function(params, callback) {
 exports.edit = function(company_id, callback) {
     var query = 'CALL company_getinfo(?)';
     var queryData = [company_id];
-
+    console.log("company_id", company_id)
     connection.query(query, queryData, function(err, result) {
         callback(err, result);
     });
