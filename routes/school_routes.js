@@ -180,13 +180,26 @@ router.get('/', (req, res) =>
   console.log("school id")
   console.log(req.query.school_id)
   console.log('\n')
-  // can't tell the difference between same function but different parameters
+
+  // get the school data
   school_dal.getSchool1(req.query.school_id)
   .then(school1 =>
     {
-      console.log(school1[0])
-      let school = school1[0]
-      res.render('school/schoolViewById', {school});
+        console.log(school1[0])
+        // use the address id found to get the address data
+        school_dal.getAddress(school1[0].address_id)
+        .then(result =>
+          {
+            let school = school1[0]
+            let address = result[0]
+            console.log(address)
+            res.render('school/schoolViewById', {school, address});
+          }
+        )
+      //console.log(school1[0])
+      //let school = school1[0]
+
+      //res.render('school/schoolViewById', {school});
     })
   .catch(err => res.send(err));
 });

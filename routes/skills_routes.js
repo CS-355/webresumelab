@@ -32,6 +32,7 @@ router.get('/insertNewSkills', (req, res) =>
   {
     console.log("got here")
     console.log(req.query)
+    // have to add to link tables
     skills_dal.insertSkill(req.query, 'skill')
     skills_dal.getSkills()
     .then(skill =>
@@ -78,6 +79,7 @@ router.get('/editSkill', (req, res) =>
       console.log(req.query)
       skills_dal.deleteSkills(req.query.skill_id)
       skills_dal.getAllSkillsNames()
+      // delete helper tables
       .then(skill =>
         {
           res.render('skills/skillsViewAll', {skill});

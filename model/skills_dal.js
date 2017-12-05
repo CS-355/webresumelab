@@ -66,13 +66,13 @@ exports.editSkill = (req) =>
       });
   })
 }
-exports.editOldSkills = ({skill_name, skill_id}) =>
+exports.editOldSkills = ({skill_name, skill_id, description}) =>
 {
     return new Promise((resolve, reject) =>
         {
             console.log("data to update")
             console.log(skill_name, skill_id)
-            let myquery = `update skill set skill_name = '${skill_name}' where skill_id = ${skill_id};`;
+            let myquery = `update skill set skill_name = '${skill_name}', description = '${description}' where skill_id = ${skill_id};`;
             console.log(myquery)
             connection.query(myquery, (err) =>
                 {
@@ -87,9 +87,11 @@ exports.deleteSkills = (skill_id) =>
 {
     console.log("skill id")
     console.log(skill_id)
+    // delete entries in helper tables
+    // delete from account_skill and resume_skill
     return new Promise((resolve, reject) =>
         {
-            let myquery = `delete from skill where skill_id = ${skill_id};`;
+            let myquery = `call deleteAllSkillData(${skill_id});`;
             connection.query(myquery, (err) =>
                 {
                     err ? reject(err) : resolve();
@@ -112,6 +114,7 @@ exports.addSkills = (req, res) =>
         );
 }
 
+//insertSkills(skill)
 exports.insertSkill = (data, item) =>
 {
     console.log("item = ", item)

@@ -86,9 +86,60 @@ exports.editOldAddress = ({street, zip_code, address_id}) =>
 )
 }
 
-exports.deleteAddress = (address_id) =>
+exports.getAllSchoolIds = (address_id) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    let myquery = `select school_id from school where address_id = ${address_id};`;
+    connection.query(myquery, (err, school_ids) =>
+    {
+      err ? reject(err) : resolve(school_ids);
+    }
+  )
+  }
+)
+}
+exports.deleteSchoolHelperTables = (address_id, school_id) =>
+{
+  //console.log(address_id, school_id)
+
+
+  return new Promise((resolve, reject) =>
+    {
+      let myquery = `call deleteAddress(${address_id}, ${school_id});`;
+      connection.query(myquery, (err) =>
+        {
+          err ? reject(err) : resolve();
+        }
+
+    );
+    }
+)
+}
+
+exports.deleteFromComanyAddress = (address_id) =>
 {
   console.log(address_id)
+
+
+  return new Promise((resolve, reject) =>
+    {
+      let myquery = `delete from company_address where address_id = ${address_id};`;
+      connection.query(myquery, (err) =>
+        {
+          err ? reject(err) : resolve();
+        }
+
+    );
+    }
+)
+}
+
+exports.deleteFromAddress = (address_id) =>
+{
+  console.log(address_id)
+
+
   return new Promise((resolve, reject) =>
     {
       let myquery = `delete from address where address_id = ${address_id};`;

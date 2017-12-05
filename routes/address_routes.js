@@ -72,13 +72,76 @@ router.get('/editOldAddress', (req, res) =>
   router.get('/deleteAddress', (req, res) =>
     {
       console.log(req.query)
-      address_dal.deleteAddress(req.query.address_id)
+      // get school_id
+      address_dal.getAllSchoolIds(req.query.address_id)
+      .then(school_ids =>
+        {
+          console.log(school_ids, '\n')
+          // go through all school_ids
+          if(school_ids.constructor === Array)
+          {
+            for (var i = 0; i < school_ids.length; i++)
+            {
+                console.log(i, school_ids[i].school_id)
+                address_dal.deleteSchoolHelperTables(req.query.address_id, school_ids[i].school_id)
+              // deleteSchoolHelperTables
+                // delete from account_school
+                // delete from resume_school
+              }
+          }
+          else
+          {
+              address_dal.deleteSchoolHelperTables(req.query.addres_id, school_ids.school_id)
+            // deleteSchoolHelperTables
+              // delete from account_school
+              // delete from resume_school
+          }
+          console.log("first part done")
+          // delete from company_address
+          address_dal.deleteFromComanyAddress(req.query.address_id)
+          . then(result =>
+            {
+              // delete from address
+              address_dal.deleteFromAddress(req.query.address_id)
+              console.log("all deleting done")
+              address_dal.getAllAddressNames()
+              .then(address =>
+                {
+                  res.render('address/addressViewAll', {address});
+                })
+              .catch(err => res.send(err));
+
+            }
+
+          )
+          /*let school_id = result.school_id
+          address_dal.deleteAddress(req.query.address_id, school_id)
+          console.log("address and stuff has been deleted")
+
+          address_dal.getAllAddressNames()
+          .then(address =>
+            {
+              res.render('address/addressViewAll', {address});
+            })
+          .catch(err => res.send(err));
+          */
+        }
+      )
+        // run 1 delete prodecudre with school_id and address_id
+
+
+      // delete account_school with school_id
+      // delete resume_school with school_id
+      // delete school with address_id
+      // delete company_address with address_id
+      // delete address with address_id
+      /*address_dal.deleteAddress(req.query.address_id)
       address_dal.getAllAddressNames()
       .then(address =>
         {
           res.render('address/addressViewAll', {address});
         })
-      .catch(err => res.send(err));
+      .catch(err => res.send(err));*/
     });
 router.get('/', (req, res) =>
   {

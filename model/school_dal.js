@@ -69,8 +69,7 @@ exports.getSchool1 = (school_id) =>
 {
   console.log("got here")
   console.log(school_id)
-  console.log("fails after here")
-
+  //console.log("fails after here")
   return new Promise((resolve, reject) =>
     {
       let myquery = `select * from school where school_id = ${school_id};`;
@@ -112,6 +111,18 @@ exports.editSchool = (req) =>
 
 
 }
+exports.getAddress = (address_id) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    let myquery = `select * from address where address_id = ${address_id};`;
+    connection.query(myquery, (err, result) =>
+    {
+      err ? reject(err) : resolve(result);
+    });
+  });
+}
+
 exports.getAllSchoolData = (school_id, address_id) =>
 {
   return new Promise((resolve, reject) =>
