@@ -14,10 +14,14 @@ exports.getAllResumeNames = () =>
 {
     return new Promise((resolve, reject) =>
       {
+/*select r.resume_id, r.resume_name, a.first_name, a.last_name
+from resume as r
+left join account as a on a.account_id = r.account_id
+order by r.resume_id asc*/
         let myquery = 'select r.resume_id, r.resume_name, a.first_name, a.last_name from resume as r left join account as a on a.account_id = r.account_id order by r.resume_id asc;';
         connection.query(myquery, (err, result) =>
           {
-            //console.log(result)
+            console.log(myquery)
             err ? reject(err) : resolve(result);
           });
       }
@@ -86,7 +90,18 @@ exports.editOldResume = ({resume_name, resume_id}) =>
     }
 )
 }
-
+exports.getAccountId = (resume_id) =>
+{
+  return new Promise((resolve, reject) =>
+  {
+    let myquery = `call getAccountId(${resume_id});`;
+    connection.query(myquery, (err, result) =>
+      {
+        err ? reject(err) : resolve(result);
+      });
+  }
+)
+}
 exports.getDataForAddNewResumeForm = (account_id) =>
 {
   // get all users in database
@@ -114,21 +129,61 @@ exports.getDataForAddNewResumeForm = (account_id) =>
 exports.insertNewResumeData = ({account_id, resume_name, school_id, company_id, skill_id}) =>
 {
   //insertResume()
+  let company_ids = company_id
   // insert account_id, resume_name into resume table
   let query = {account_id, resume_name}
   console.log(query)
+  // insert the resume
+  // query select resumes.resume_id from resumes where resume_name = ?
+  // query_data = [resume_name]
+  /*return new Promise((resolve, reject) =>
+    {
+      connection.query(myquery, query_data,(err, result) =>
+        {
+          // fill up helper table query using result
+          // result[0].resume_id
+          err ? reject(err) : resolve(result);
+        }
+
+    );
+  });*/
+
   exports.insertResume(query, 'resume')
   .then(result =>
     {
+      console.log("result")
       console.log(result)
       console.log(result.insertId)
       console.log("insert query sucessfull")
+      if(company_ids.constructor === Array)
+      {
+          for(var i = 0; i < company_ids.length; i++)
+          {
+            let resume_id = result.insertId
+            let data_shared = 'this is data shared'
+            let was_hired = true
+            // can have multiple companies
+            let company_id
+            let resume_company_obj = {resume_id, company_id, data_shared, was_hired}
+            console.log("resume_company_obj", resume_company_obj)
+          }
+      }
+      else
+      {
+
+      }
+
       let resume_id = result.insertId
       let data_shared = 'this is data shared'
       let was_hired = true
+      // can have multiple companies
       let resume_company_obj = {resume_id, company_id, data_shared, was_hired}
+      console.log("resume_company_obj", resume_company_obj)
+
+
       exports.insertResume(resume_company_obj, 'resume_company')
-      .then(result =>
+      console.log("efd up")
+      /*.then(result =>
         {
           let resume_school_obj = {resume_id, school_id}
           exports.insertResume(resume_school_obj, 'resume_school')
@@ -141,7 +196,7 @@ exports.insertNewResumeData = ({account_id, resume_name, school_id, company_id, 
 
           )
         }
-      )
+      )*/
     }
   )
   // insert data into resume_company(nulls for empty fields)

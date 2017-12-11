@@ -53,7 +53,8 @@ router.post('/add/saveNewResume', (req, res) =>
   console.log("got here")
   console.log(req.body)
   console.log("\n")
-  resume_dal.insertNewResumeData(req.body)
+  let {account_id, resume_name, school_id, company_ids, skill_id} = req.body
+  resume_dal.insertNewResumeData(account_id, resume_name, school_id, company_ids, skill_id)
 
   //res.send('success')
   resume_dal.getAllResumeNames()
@@ -80,11 +81,19 @@ router.get('/insertNewResume', (req, res) =>
     .catch(err => res.send(err));
   });
 
-router.post('/editResume', (req, res) =>
+router.get('/editResume', (req, res) =>
   {
     console.log("edit resume")
     console.log(req.query)
-    resume_dal.getDataForAddNewResumeForm(req.query.account_id)
+    // get the account_id first
+    resume_dal.getAccountId(req.query.resume_id)
+    .then(result =>
+      {
+      console.log("result", result)
+      resume_dal.getDataForAddNewResumeForm(result.account_id)
+    }
+    )
+    /*resume_dal.getDataForAddNewResumeForm(req.query.resume_id)
     .then(calls =>
       {
         let a = calls[0]
@@ -95,7 +104,7 @@ router.post('/editResume', (req, res) =>
         console.log(a, b, c, d)
         res.render('resume/editResume', {a, b, c, d});
       })
-    .catch(err => res.send(err));
+    .catch(err => res.send(err));*/
   });
 
   router.get('/editOldResume', (req, res) =>

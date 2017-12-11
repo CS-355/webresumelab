@@ -16,7 +16,7 @@
             <td><a href="/resume/?resume_id=<%=resume[i].resume_id%>"><%=resume[i].resume_name%></a></td>
             <td>
               <!-- <form here for editing resume> -->
-                <button onclick="event.preventDefault();window.location.href='/resume/editResume/?account_id=<%=resume[i].account_id%>'">Edit</button>
+                <button onclick="event.preventDefault();window.location.href='/resume/editResume/?resume_id=<%=resume[i].resume_id%>'">Edit</button>
                 <form action="/resume/deleteResume/" style="...">
                     <input type="hidden" name="resume_id" id="resume_id" value="<%=resume[i].resume_id%>" />
                     <input type="submit" value="Delete"/>
